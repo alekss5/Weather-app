@@ -5,7 +5,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-When downloading the project just run the following comands:
+When downloading the project just run one of the following comands:
 * yarn
   ```sh
   yarn add
