@@ -1,17 +1,34 @@
-import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import MainScreen from '../screens/MainScreen';
 
-describe('MainScreen', () => {
-  it('render', () => {
-    const { getByText, getByPlaceholderText } = render(<MainScreen />);
+jest.mock('react-redux', () => ({
+  useDispatch: jest.fn().mockReturnValue(jest.fn()),
+}));
 
-    expect(getByText('Enter City to see the weather')).toBeTruthy();
+const mockNavigation = {
+  navigate: jest.fn(),
+};
 
-    expect(getByPlaceholderText('Enter city name')).toBeTruthy();
-
-    expect(getByText('Use my location')).toBeTruthy();
+describe('MainScreen component', () => {
+  test('initial state', () => {
+    const { getByPlaceholderText, getByText } = render(<MainScreen navigation={mockNavigation} />);
+    const input = getByPlaceholderText('Enter city name');
+    const findButton = getByText('Find');
+    
+    expect(input.props.value).toBe('');
+    expect(findButton.props.disabled).toBeFalsy();
   });
 
+  test('entering city and pressing find button', async () => {
+    const { getByPlaceholderText, getByText } = render(<MainScreen navigation={mockNavigation} />);
+    const input = getByPlaceholderText('Enter city name');
+    const findButton = getByText('Find');
+    
+    fireEvent.changeText(input, 'New York');
+    fireEvent.press(findButton);
 
+    await waitFor(() => {
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('WeatherScreen');
+    });
+  });
 });

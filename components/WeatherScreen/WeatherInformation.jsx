@@ -9,7 +9,7 @@ import sunsetIcon from "../../assets/icons/sunset.png";
 import windIcon from "../../assets/icons/wind.png";
 
 const WeatherInformation = ({ weatherData }) => {
-  if (!weatherData) return null; // Error handling
+  if (!weatherData) return null; 
 
   const { name, main, weather, sys, wind, timezone } = weatherData;
   const { temp, temp_max, temp_min, feels_like } = main;
